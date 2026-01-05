@@ -1,9 +1,9 @@
 @tool
 extends Node3D
 
-@export var width:  int = 10
-@export var height: int = 10
-@export var hex_radius: float = 0.5
+@export_range(1, 500) var width:  int = 10
+@export_range(1, 500) var height: int = 10
+@export_range(0.0, 1000.0) var hex_radius: float = 0.5
 @export_tool_button("Generate Mesh", "Callable") var generate_mesh_action = generate_mesh
 @export_tool_button("Clear Mesh", "Callable") var clear_mesh_action = clear_mesh
 
