@@ -47,6 +47,7 @@ func generate_mesh():
             mesh_instance_3d.position.z = position_2d.y
             mesh_instance_3d.scale.y = randfn(1.0, 0.05)
             hexes_container.add_child(mesh_instance_3d)
+            mesh_instance_3d.owner = self
     
     hexes_container.position.x = -(width * hex_radius * sqrt(3.0)/2.0)
     hexes_container.position.z = -(height * hex_radius * 3.0/4.0)
