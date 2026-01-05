@@ -46,7 +46,9 @@ func generate_mesh():
             mesh_instance_3d.position.x = position_2d.x
             mesh_instance_3d.position.z = position_2d.y
             hexes_container.add_child(mesh_instance_3d)
-    pass
+    
+    hexes_container.position.x = -(width * hex_radius * sqrt(3.0)/2.0)
+    hexes_container.position.z = -(height * hex_radius * 3.0/4.0)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
