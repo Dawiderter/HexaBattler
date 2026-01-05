@@ -22,22 +22,29 @@ func generate_hex_mesh() -> Mesh:
     mesh.height = 0.001
     return mesh
 
+# x and z are in grid coordinates
+func get_hex_center(x: int, z: int) -> Vector2:
+    var coeff = sqrt(3.0) / 2.0
+    var hex_diameter = 2 * hex_radius
+    
+    var x_offset = coeff if (z % 2) else 0.0
+    
+    return Vector2(hex_diameter * (x * coeff+x_offset/2), hex_diameter * (3.0/4.0) * z)
+
 func generate_mesh():
     clear_mesh()
 
     var mesh = generate_hex_mesh()
-    var coeff = sqrt(3) / 2
-    var hex_diameter = 2 * hex_radius
     
     for z in range(height):
         for x in range(width):
             var mesh_instance_3d = MeshInstance3D.new()
             mesh_instance_3d.mesh = mesh
             
-            var x_offset = coeff if (z % 2) else 0.0
+            var position_2d = get_hex_center(x, z)
             
-            mesh_instance_3d.position.x = hex_diameter * (x * coeff+x_offset/2)
-            mesh_instance_3d.position.z = hex_diameter * (3.0/4.0) * z
+            mesh_instance_3d.position.x = position_2d.x
+            mesh_instance_3d.position.z = position_2d.y
             hexes_container.add_child(mesh_instance_3d)
     pass
 
