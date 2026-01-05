@@ -19,7 +19,7 @@ func generate_hex_mesh() -> Mesh:
     mesh.radial_segments = 6
     mesh.top_radius = hex_radius * 0.95
     mesh.bottom_radius = hex_radius * 0.95
-    mesh.height = 0.001
+    mesh.height = 0.25
     return mesh
 
 # x and z are in grid coordinates
@@ -45,6 +45,7 @@ func generate_mesh():
             
             mesh_instance_3d.position.x = position_2d.x
             mesh_instance_3d.position.z = position_2d.y
+            mesh_instance_3d.scale.y = randfn(1.0, 0.05)
             hexes_container.add_child(mesh_instance_3d)
     
     hexes_container.position.x = -(width * hex_radius * sqrt(3.0)/2.0)

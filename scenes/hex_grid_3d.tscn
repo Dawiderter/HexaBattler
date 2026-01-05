@@ -4,5 +4,7 @@
 
 [node name="HexGrid3D" type="Node3D"]
 script = ExtResource("1_0f368")
+width = 20
+height = 15
 
 [node name="HexesContainer" type="Node3D" parent="."]
