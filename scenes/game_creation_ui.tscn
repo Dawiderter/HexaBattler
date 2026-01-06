@@ -42,6 +42,7 @@ vertical_alignment = 1
 [node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/Width"]
 layout_mode = 2
 max_value = 40.0
+value = 20.0
 rounded = true
 alignment = 1
 
@@ -57,6 +58,7 @@ vertical_alignment = 1
 [node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/Height"]
 layout_mode = 2
 max_value = 40.0
+value = 16.0
 rounded = true
 alignment = 1
 
