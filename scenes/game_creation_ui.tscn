@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfxercsqnc52r"]
+
+[ext_resource type="Theme" uid="uid://cix7av3la7bdv" path="res://resources/ui_theme.tres" id="1_n5irr"]
+[ext_resource type="Script" uid="uid://d1p7o00nwnot4" path="res://scenes/game_creation_ui.gd" id="2_qmmc8"]
+
+[node name="GridCreationControl" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_n5irr")
+script = ExtResource("2_qmmc8")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -95.5
+offset_top = -22.5
+offset_right = 95.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Width" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Width"]
+layout_mode = 2
+text = "Width:  "
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/Width"]
+layout_mode = 2
+max_value = 40.0
+rounded = true
+alignment = 1
+
+[node name="Height" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Height"]
+layout_mode = 2
+text = "Height: "
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/Height"]
+layout_mode = 2
+max_value = 40.0
+rounded = true
+alignment = 1
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Generate"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

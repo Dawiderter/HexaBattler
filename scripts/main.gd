@@ -10,3 +10,10 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
     pass
+
+func _on_grid_creation_ui_create_grid(width: int, height: int) -> void:
+    hex_grid.width = width
+    hex_grid.height = height
+    hex_grid.generate_mesh()
+    
+    $GridCreationUi.visible = false

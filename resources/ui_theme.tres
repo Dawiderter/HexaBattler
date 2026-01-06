@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cix7av3la7bdv"]
+
+[ext_resource type="FontFile" uid="uid://drrau8r0vj1mi" path="res://assets/Workbench-Regular-VariableFont_BLED,SCAN.ttf" id="1_cviax"]
+
+[resource]
+default_font = ExtResource("1_cviax")
+Button/constants/outline_size = 10
+Button/font_sizes/font_size = 32
+Label/constants/outline_size = 10
+Label/font_sizes/font_size = 32
+LineEdit/constants/outline_size = 8
+LineEdit/font_sizes/font_size = 24
+VBoxContainer/constants/separation = 20
