@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://d2f4ww1edhbja"]
-
-[ext_resource type="Script" uid="uid://dmncxjs8fvpqt" path="res://lib_minions/warrior/warrior.gd" id="1_8wr2i"]
-
-[node name="Warrior" type="Node3D"]
-script = ExtResource("1_8wr2i")

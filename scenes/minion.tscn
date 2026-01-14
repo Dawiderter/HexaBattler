@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1rec0qck7uf7"]
+
+[ext_resource type="Script" uid="uid://c8nd1hqi5rw65" path="res://scripts/minion.gd" id="1_7n1am"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7n1am"]
+resource_local_to_scene = true
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_y8etf"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_7n1am")
+size = Vector3(0.4, 0.2, 0.4)
+
+[node name="Minion" type="Node3D"]
+script = ExtResource("1_7n1am")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_y8etf")

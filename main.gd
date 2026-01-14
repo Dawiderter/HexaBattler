@@ -1,12 +1,10 @@
 extends Node
 @onready var hex_grid = $Grid
 @onready var timeline = $Grid/Timeline
-@onready var test = $Grid/Warrior
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     hex_grid.generate_mesh()
-    test.attach_to_timeline(timeline)
     pass # Replace with function body.
 
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c66y8unr1phky"]
+[gd_scene load_steps=3 format=3 uid="uid://c66y8unr1phky"]
 
 [ext_resource type="Script" uid="uid://dnspibv48w65q" path="res://scripts/hex_grid_3d.gd" id="1_0f368"]
+[ext_resource type="PackedScene" uid="uid://do2jdxnae5y52" path="res://scenes/faction.tscn" id="2_d63xo"]
 
 [node name="HexGrid3D" type="Node3D"]
 script = ExtResource("1_0f368")
@@ -8,3 +9,11 @@ width = 20
 height = 15
 
 [node name="HexesContainer" type="Node3D" parent="."]
+
+[node name="MinionContainer" type="Node3D" parent="."]
+
+[node name="Faction A" parent="MinionContainer" instance=ExtResource("2_d63xo")]
+color = Color(1, 0, 0, 1)
+
+[node name="Faction B" parent="MinionContainer" instance=ExtResource("2_d63xo")]
+color = Color(0, 0, 1, 1)

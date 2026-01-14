@@ -3,9 +3,11 @@
 [ext_resource type="Script" uid="uid://s7n245gv54yq" path="res://scripts/hex.gd" id="1_b6u1t"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b6u1t"]
+resource_local_to_scene = true
 albedo_color = Color(0.7457927, 0.71161765, 0.578266, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_3o6hm"]
+resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_b6u1t")
 height = 0.25
 radial_segments = 6
@@ -51,6 +53,7 @@ mesh = SubResource("CylinderMesh_3o6hm")
 
 [node name="Hover" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.05, 0, 0, 0, 1, 0, 0, 0, 1.05, 0, 0.37616712, 0)
+visible = false
 mesh = SubResource("CylinderMesh_wbi06")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]

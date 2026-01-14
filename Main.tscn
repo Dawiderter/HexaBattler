@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://jijp0njympkb"]
+[gd_scene load_steps=5 format=3 uid="uid://jijp0njympkb"]
 
 [ext_resource type="Script" uid="uid://4o5ny78vhydp" path="res://main.gd" id="1_fos0i"]
 [ext_resource type="PackedScene" uid="uid://c66y8unr1phky" path="res://scenes/hex_grid_3d.tscn" id="2_3dxm6"]
-[ext_resource type="PackedScene" uid="uid://d2f4ww1edhbja" path="res://lib_minions/warrior/warrior.tscn" id="3_lgr22"]
 [ext_resource type="PackedScene" uid="uid://cfpajlnlytw8q" path="res://scenes/timeline.tscn" id="4_trn2v"]
 [ext_resource type="PackedScene" uid="uid://dfxercsqnc52r" path="res://scenes/game_creation_ui.tscn" id="5_03owx"]
 
@@ -11,9 +10,6 @@ script = ExtResource("1_fos0i")
 
 [node name="Grid" parent="." instance=ExtResource("2_3dxm6")]
 height = 16
-cord_display = 1
-
-[node name="Warrior" parent="Grid" instance=ExtResource("3_lgr22")]
 
 [node name="Timeline" parent="Grid" instance=ExtResource("4_trn2v")]
 
