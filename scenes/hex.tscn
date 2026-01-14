@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://ctaad1aysutq5"]
+
+[ext_resource type="Script" uid="uid://s7n245gv54yq" path="res://scripts/hex.gd" id="1_b6u1t"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b6u1t"]
+albedo_color = Color(0.7457927, 0.71161765, 0.578266, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3o6hm"]
+material = SubResource("StandardMaterial3D_b6u1t")
+height = 0.25
+radial_segments = 6
+rings = 0
+
+[sub_resource type="Shader" id="Shader_b6u1t"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, unshaded;
+
+uniform vec4 albedo : source_color;
+
+void vertex() {
+    COLOR.a = 1.0 - (VERTEX.y + 0.5);
+}
+
+void fragment() {
+	ALBEDO = albedo.rgb;
+	ALPHA *= albedo.a * pow(COLOR.a, 2.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3o6hm"]
+render_priority = 0
+shader = SubResource("Shader_b6u1t")
+shader_parameter/albedo = Color(0.24705882, 1, 1, 0.78039217)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wbi06"]
+material = SubResource("ShaderMaterial_3o6hm")
+height = 1.0
+radial_segments = 6
+rings = 0
+cap_top = false
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_eljhm"]
+points = PackedVector3Array(0.39079398, 0.125, 0.22562495, 0, 0.125, 0.45124993, 0.39079398, -0.125, 0.22562495, 0.39079398, 0.125, -0.22571334, 0, -0.125, 0.45124993, -0.39079398, 0.125, 0.22553661, 0.39079398, -0.125, -0.22571334, 0, 0.125, -0.45125, -0.39079398, -0.125, 0.22553661, -0.39079398, 0.125, -0.22562501, 0, -0.125, -0.45125, -0.39079398, -0.125, -0.22562501)
+
+[node name="Hex" type="Node3D"]
+script = ExtResource("1_b6u1t")
+
+[node name="Solid" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.9, 0, 0, 0, 1, 0, 0, 0, 0.9, 0, 0, 0)
+mesh = SubResource("CylinderMesh_3o6hm")
+
+[node name="Hover" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.05, 0, 0, 0, 1, 0, 0, 0, 1.05, 0, 0.37616712, 0)
+mesh = SubResource("CylinderMesh_wbi06")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_eljhm")
+
+[node name="CordLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.13637033, 0)
+font_size = 64
+
+[connection signal="input_event" from="StaticBody3D" to="." method="_on_hex_input_event"]
+[connection signal="mouse_entered" from="StaticBody3D" to="." method="_on_hex_mouse_entered"]
+[connection signal="mouse_exited" from="StaticBody3D" to="." method="_on_hex_mouse_exited"]

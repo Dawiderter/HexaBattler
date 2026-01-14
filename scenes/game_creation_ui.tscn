@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dfxercsqnc52r"]
 
 [ext_resource type="Theme" uid="uid://cix7av3la7bdv" path="res://resources/ui_theme.tres" id="1_n5irr"]
-[ext_resource type="Script" uid="uid://d1p7o00nwnot4" path="res://scenes/game_creation_ui.gd" id="2_qmmc8"]
+[ext_resource type="Script" uid="uid://d1p7o00nwnot4" path="res://scripts/game_creation_ui.gd" id="2_qmmc8"]
 
 [node name="GridCreationControl" type="Control"]
 layout_mode = 3
