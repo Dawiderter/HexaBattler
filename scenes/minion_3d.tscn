@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://d1rec0qck7uf7"]
+[gd_scene load_steps=6 format=3 uid="uid://d1rec0qck7uf7"]
 
 [ext_resource type="Script" uid="uid://bf8vbfpbrguqw" path="res://scripts/minion_3d.gd" id="1_j7y4m"]
+[ext_resource type="Theme" uid="uid://cix7av3la7bdv" path="res://resources/ui_theme.tres" id="2_gq42m"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7n1am"]
 resource_local_to_scene = true
@@ -11,6 +12,9 @@ resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_7n1am")
 size = Vector3(0.4, 0.2, 0.4)
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_j7y4m"]
+viewport_path = NodePath("HealthBar/SubViewport")
+
 [node name="Minion3D" type="Node3D"]
 script = ExtResource("1_j7y4m")
 
@@ -18,6 +22,24 @@ script = ExtResource("1_j7y4m")
 mesh = SubResource("BoxMesh_y8etf")
 
 [node name="DebugName" type="Label3D" parent="."]
-transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, 1.5, 0, -1.5, -6.556708e-08, 0, 0.17856029, 0)
+transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, 1.5, 0, -1.5, -6.556708e-08, 0, 0.10390046, -0.026609391)
 text = "Red 000"
 autowrap_mode = 2
+
+[node name="HealthBar" type="Sprite3D" parent="."]
+transform = Transform3D(0.75, 0, 0, 0, -3.278354e-08, 0.75, 0, -0.75, -3.278354e-08, 0, 0.11015561, 0.25457543)
+texture = SubResource("ViewportTexture_j7y4m")
+
+[node name="SubViewport" type="SubViewport" parent="HealthBar"]
+size = Vector2i(75, 10)
+
+[node name="ProgressBar" type="ProgressBar" parent="HealthBar/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_gq42m")
+max_value = 1.0
+value = 1.0
+show_percentage = false

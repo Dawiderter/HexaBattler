@@ -25,4 +25,5 @@ script = ExtResource("5_3dxm6")
 game_simulation = NodePath("../GameSimulation")
 
 [connection signal="create_grid" from="GridCreationUi" to="." method="_on_grid_creation_ui_create_grid"]
-[connection signal="minion_state_changed" from="GameSimulation" to="HexGrid3D" method="_on_game_simulation_minion_state_changed"]
+[connection signal="minion_state_damaged" from="GameSimulation" to="HexGrid3D" method="_on_game_simulation_minion_state_damaged"]
+[connection signal="minion_state_moved" from="GameSimulation" to="HexGrid3D" method="_on_game_simulation_minion_state_moved"]

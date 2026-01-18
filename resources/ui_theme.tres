@@ -1,6 +1,9 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cix7av3la7bdv"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://cix7av3la7bdv"]
 
 [ext_resource type="FontFile" uid="uid://drrau8r0vj1mi" path="res://assets/Workbench-Regular-VariableFont_BLED,SCAN.ttf" id="1_cviax"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cviax"]
+bg_color = Color(0, 0.72299564, 0.2753609, 1)
 
 [resource]
 default_font = ExtResource("1_cviax")
@@ -10,4 +13,5 @@ Label/constants/outline_size = 10
 Label/font_sizes/font_size = 32
 LineEdit/constants/outline_size = 8
 LineEdit/font_sizes/font_size = 24
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_cviax")
 VBoxContainer/constants/separation = 20

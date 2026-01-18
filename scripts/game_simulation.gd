@@ -1,6 +1,7 @@
 class_name GameSimulation extends Node
 
-signal minion_state_changed(minion: MinionState)
+signal minion_state_moved(minion: MinionState)
+signal minion_state_damaged(minion: MinionState)
 
 var width:  int
 var height: int
@@ -74,7 +75,7 @@ func find_closest_minion(axcord: Vector2i, faction_mask: Faction) -> MinionState
     var closest_dist : int = 100_000_000
     for minion_id in minions:
         var minion = minions[minion_id]
-        if minion.faction == faction_mask:
+        if minion.faction == faction_mask or minion.is_dead():
             continue
         var dist = GridUtils.axial_length(minion.axcord - axcord)
         if dist < closest_dist:
@@ -83,30 +84,48 @@ func find_closest_minion(axcord: Vector2i, faction_mask: Faction) -> MinionState
     return closest
     
 func do_minion_action(minion: MinionState):
-    if minion.target == null:
+    if minion.target == null or minion.target.is_dead():
         minion.target = find_closest_minion(minion.axcord, minion.faction)
     
     if minion.target == null:
+        push_action(1, minion)
         return
+    
+    assert(not minion.is_dead())
         
     var target_pos := GridUtils.axcord_to_cubecord(minion.target.axcord)
     var current_pos := GridUtils.axcord_to_cubecord(minion.axcord)
     
-    var dir := GridUtils.cube_norm(target_pos - current_pos)
-    var diri := GridUtils.cube_round(dir)
-    var new_pos = GridUtils.cubecord_to_axcord(current_pos + diri)
-    
-    var hex = get_hex_axcord(new_pos)
-    if hex.is_free():
-        var prev_hex = get_hex_axcord(minion.axcord)
-        prev_hex.free_cell()
+    if GridUtils.cube_length(target_pos - current_pos) <= 1:
+        # Attack
+        minion.target.take_damage(minion.stat_attack_power)
+        if minion.target.is_dead():
+            cancel_actions(minion.target)
+            for hex in hexes:
+                if hex.lock_by_minion == minion.target:
+                    hex.free_cell()
         
-        hex.occupy_for(minion)
+        minion_state_damaged.emit(minion.target)
+    else:
+        # Try to move forward
+        var dir := GridUtils.cube_norm(target_pos - current_pos)
+        var diri := GridUtils.cube_round(dir)
+        var new_pos = GridUtils.cubecord_to_axcord(current_pos + diri)
         
-        minion.axcord = new_pos
-        minion_state_changed.emit(minion)
+        var hex = get_hex_axcord(new_pos)
+        if hex.is_free():
+            var prev_hex = get_hex_axcord(minion.axcord)
+            prev_hex.free_cell()
+            
+            hex.occupy_for(minion)
+            
+            minion.axcord = new_pos
+            minion_state_moved.emit(minion)
     
     push_action(1, minion)
+
+func cancel_actions(target: MinionState):
+    queue = queue.filter(func(a): return a.target != target)
 
 func push_action(after: int, target: MinionState):
     assert(after >= 0)

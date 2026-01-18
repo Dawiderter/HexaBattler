@@ -102,9 +102,20 @@ func _on_hex_input_event(event: InputEvent, hex: Hex3D):
             print("Closest: ", closest.debug_name if closest != null else "null")
 
 
-func _on_game_simulation_minion_state_changed(minion_state: MinionState) -> void:
+func _on_game_simulation_minion_state_moved(minion_state: MinionState) -> void:
     var minion_3d = minions[minion_state.id]
     var hex_position = get_hex_axcord(minion_state.axcord).position
-    
     minion_3d.position.x = hex_position.x
     minion_3d.position.z = hex_position.z
+    
+func _on_game_simulation_minion_state_damaged(minion_state: MinionState) -> void:
+    var minion_3d = minions[minion_state.id]
+    minion_3d.set_health(minion_state.health / minion_state.max_health)
+    
+    if minion_state.is_dead():        
+        minion_3d.set_color(Color.GRAY)
+        minion_3d.set_debug_name("")
+        minion_3d.health_bar.visible = false
+        minion_3d.position.y -= 0.1
+    
+    

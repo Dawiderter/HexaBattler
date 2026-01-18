@@ -2,10 +2,10 @@ class_name MinionState extends RefCounted
 
 var id : int
 
-var max_health: float
+var max_health: float = 5.0
 var health: float = max_health
 
-var stat_attack_power: float
+var stat_attack_power: float = 1.0
 var stat_speed: float
 var stat_range: int
 
@@ -28,7 +28,8 @@ func _ready() -> void:
 func take_damage(amount: float):
     assert(amount > 0.0)
     health -= amount
-    if health <= 0:
-        pass
+
+func is_dead():
+    return health <= 0.0
 
     
