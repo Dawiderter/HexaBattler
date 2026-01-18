@@ -24,6 +24,14 @@ func get_hex_axcord(axcord: Vector2i) -> HexState:
     var i = offcord.x + offcord.y * width
     return hexes[i]
     
+func get_hex_cubecord(cubecord: Vector3i) -> HexState:
+    var axcord = GridUtils.cubecord_to_axcord(cubecord)
+    return get_hex_axcord(axcord)
+    
+func is_cubecord_in_bounds(cubecord: Vector3i) -> bool:
+    var offcord = GridUtils.axcord_to_offcord(GridUtils.cubecord_to_axcord(cubecord))
+    return 0 <= offcord.x and offcord.x < width and 0 <= offcord.y and offcord.y < height
+    
 func _ready():
     var faction_red = Faction.new()
     faction_red.color = Color.RED
@@ -70,18 +78,39 @@ func spawn_minion(offcord: Vector2i, faction: Faction) -> MinionState:
     
     return minion
         
-func find_closest_minion(axcord: Vector2i, faction_mask: Faction) -> MinionState:
-    var closest : MinionState = null
-    var closest_dist : int = 100_000_000
-    for minion_id in minions:
-        var minion = minions[minion_id]
-        if minion.faction == faction_mask or minion.is_dead():
+func find_closest_minion_and_move(axcord: Vector2i, faction_mask: Faction):
+    var starting_pos = GridUtils.axcord_to_cubecord(axcord)
+    
+    # This queue should only contain cubecord coordinates
+    var bfs_queue:  Array[Vector2i] = [starting_pos]
+    var prev_queue: Dictionary      = {starting_pos: null}
+    var visited:    Array[Vector2i] = [starting_pos]
+
+    while not bfs_queue.is_empty():
+        var curr = bfs_queue.pop_front()
+
+        if curr in visited:
             continue
-        var dist = GridUtils.axial_length(minion.axcord - axcord)
-        if dist < closest_dist:
-            closest_dist = dist
-            closest = minion
-    return closest
+
+        visited.append(curr)
+
+        var hex = get_hex_cubecord(curr)
+        if curr != starting_pos and hex.lock_by_minion != null:
+            var minion = hex.lock_by_minion
+            if minion.faction != minion.faction_mask:
+                return {"minion": minion, "move_towards_enemy": _backtrack_bfs_search(starting_pos, curr, prev_queue)}
+
+        for neighbor in GridUtils.get_neighbors(curr):
+            if is_cubecord_in_bounds(neighbor):
+                bfs_queue.push_back(neighbor)
+                prev_queue[neighbor] = curr
+
+    return null
+    
+func _backtrack_bfs_search(starting_pos: Vector2i, curr: Vector2i, prev_queue: Dictionary) -> Vector2i:
+    while prev_queue[curr] != starting_pos:
+        curr = prev_queue[curr]
+    return curr
     
 func do_minion_action(minion: MinionState):
     if minion.target == null or minion.target.is_dead():
