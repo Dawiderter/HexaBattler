@@ -16,9 +16,6 @@ extends Node3D
 @onready var hexes_container: Node3D = $HexesContainer
 @onready var minion_container: Node3D = $MinionContainer
 
-var faction_a = Faction.new()
-var faction_b = Faction.new()
-
 var hexes : Array[Hex3D] = []
 var hex_scene = preload("res://scenes/hex.tscn")
 
@@ -71,23 +68,33 @@ func generate_mesh():
     hexes_container.position.x = -(width * hex_radius * sqrt(3.0)/2.0)
     hexes_container.position.z = -(height * hex_radius * 3.0/4.0)
     
+    minion_container.position.x = -(width * hex_radius * sqrt(3.0)/2.0)
+    minion_container.position.z = -(height * hex_radius * 3.0/4.0)
+    
 func spawn_minion(hex: Hex3D, faction: Faction):
     var offcord = hex.offcords
-    if !game_simulation.spawn_minion(offcord, faction):
+    
+    var minion_state = game_simulation.spawn_minion(offcord, faction)
+    if minion_state == null:
         push_warning("Can't spawn minion on nonfree tile")
         return
 
-    var minion : Minion3D = minion_scene.instantiate()
+    var minion_3d : Minion3D = minion_scene.instantiate()
     
-    minion_container.add_child(minion)
-    minion.set_color(faction.color)
+    minion_container.add_child(minion_3d)
+    minion_3d.set_color(minion_state.faction.color)
+    minion_3d.set_debug_name(minion_state.debug_name)
     
-    minion.position = hex.global_position
-    minion.position.y += hex.height
+    minion_3d.position = hex.position
+    minion_3d.position.y += hex.height
 
 func _on_hex_input_event(event: InputEvent, hex: Hex3D):
     if event is InputEventMouseButton &&  event.is_pressed():
         if event.button_index == MOUSE_BUTTON_LEFT:
-            spawn_minion(hex, faction_a)
+            spawn_minion(hex, game_simulation.factions[0])
         if event.button_index == MOUSE_BUTTON_RIGHT:
-            spawn_minion(hex, faction_b)
+            spawn_minion(hex, game_simulation.factions[1])
+        if event.button_index == MOUSE_BUTTON_MIDDLE:
+            var cords = hex.axcords
+            var closest = game_simulation.find_closest_minion(cords, game_simulation.factions[0])
+            print("Closest: ", closest.debug_name if closest != null else "null")

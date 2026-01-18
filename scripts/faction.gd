@@ -1,3 +1,4 @@
-class_name Faction extends Node3D
+class_name Faction extends Node
 
-@export var color: Color
+var color: Color
+var debug_name: String

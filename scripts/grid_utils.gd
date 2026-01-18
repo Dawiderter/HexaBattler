@@ -20,3 +20,6 @@ static func axcord_to_offcord(axcord: Vector2i) -> Vector2i:
     var x = axcord.x + (axcord.y - parity) / 2
     var y = axcord.y
     return Vector2i(x,y)
+
+static func axial_length(axcord: Vector2i) -> int:
+    return (abs(axcord.x) + abs(axcord.x + axcord.y) + abs(axcord.y)) / 2
