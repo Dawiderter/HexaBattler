@@ -1,6 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://ctaad1aysutq5"]
 
-[ext_resource type="Script" uid="uid://s7n245gv54yq" path="res://scripts/hex.gd" id="1_b6u1t"]
+[ext_resource type="Script" uid="uid://s7n245gv54yq" path="res://scripts/hex_3d.gd" id="1_b6u1t"]
+
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b6u1t"]
 resource_local_to_scene = true

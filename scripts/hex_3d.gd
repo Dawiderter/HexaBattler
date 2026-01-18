@@ -1,8 +1,8 @@
 @tool
 
-class_name Hex extends Node3D
+class_name Hex3D extends Node3D
 
-signal input_event(event: InputEvent, hex: Hex)
+signal input_event(event: InputEvent, hex: Hex3D)
 
 @onready var mesh = $Solid
 @onready var hover_mesh = $Hover
@@ -36,47 +36,19 @@ var axcords : Vector2i:
     set(value):
         axcords = value
         update_cord_display()
-        
-enum LockState { FREE, LOCKED, OCCUPIED }
-var lock_by_minion: Minion = null;
-var lock_state := LockState.FREE:
-    set(value):
-        lock_state = value
-        update_lock_state()
-
-func is_free():
-    return lock_state == LockState.FREE
-    
-func lock_for(minion: Minion) -> void:
-    lock_state = LockState.LOCKED
-    lock_by_minion = minion
-
-func occupy_for(minion: Minion) -> void:
-    assert(
-        (lock_by_minion == null and lock_state == LockState.FREE) 
-        or (lock_by_minion == minion and lock_state == LockState.LOCKED)
-    )
-    lock_state = LockState.OCCUPIED
-    lock_by_minion = minion
-
-# Free the cell (Unit left or died)
-func free_cell() -> void:
-    lock_state = LockState.FREE
-    lock_by_minion = null
 
 func _ready() -> void:
     update_cord_display()
     update_mesh()
-    update_lock_state()
     hover_mesh.visible = false
 
-func update_lock_state():
+func update_lock_state(lock_state: HexState.LockState):
     match lock_state:
-        LockState.FREE:
+        HexState.LockState.FREE:
             mesh.mesh.material.albedo_color = Color.BEIGE
-        LockState.LOCKED:
+        HexState.LockState.LOCKED:
             mesh.mesh.material.albedo_color = Color.YELLOW
-        LockState.OCCUPIED:
+        HexState.LockState.OCCUPIED:
             mesh.mesh.material.albedo_color = Color.CRIMSON
         _:
             push_error("Wrong lock_state: ", lock_state)

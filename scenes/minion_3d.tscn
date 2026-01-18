@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d1rec0qck7uf7"]
 
-[ext_resource type="Script" uid="uid://c8nd1hqi5rw65" path="res://scripts/minion.gd" id="1_7n1am"]
+[ext_resource type="Script" uid="uid://bf8vbfpbrguqw" path="res://scripts/minion_3d.gd" id="1_j7y4m"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7n1am"]
 resource_local_to_scene = true
@@ -11,8 +11,8 @@ resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_7n1am")
 size = Vector3(0.4, 0.2, 0.4)
 
-[node name="Minion" type="Node3D"]
-script = ExtResource("1_7n1am")
+[node name="Minion3D" type="Node3D"]
+script = ExtResource("1_j7y4m")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_y8etf")

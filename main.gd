@@ -1,12 +1,10 @@
 extends Node
-@onready var hex_grid = $Grid
-@onready var timeline = $Grid/Timeline
+@onready var hex_grid = $HexGrid3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     hex_grid.generate_mesh()
     pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

@@ -1,13 +1,13 @@
-class_name Minion extends Node3D
+class_name MinionState extends RefCounted
 
-@export var max_health: float
-@onready var health: float = max_health
+var max_health: float
+var health: float = max_health
 
-@export var stat_attack_power: float
-@export var stat_speed: float
-@export var stat_range: int
+var stat_attack_power: float
+var stat_speed: float
+var stat_range: int
 
-@onready var mesh = $MeshInstance3D
+var faction: Faction
 
 # Akcja
 # - Jeżeli nie masz targetu, target = find_target:
@@ -17,16 +17,12 @@ class_name Minion extends Node3D
 #   - move_towards
 
 func _ready() -> void:
-    var parent = get_parent()
-    assert(parent != null and parent is Faction)
+    health = max_health
 
 func take_damage(amount: float):
     assert(amount > 0.0)
     health -= amount
     if health <= 0:
         pass
-    
-func set_color(color: Color):
-    mesh.mesh.material.albedo_color = color
 
     
