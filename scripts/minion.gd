@@ -11,7 +11,6 @@ var stat_range: int
 
 var faction: Faction
 var axcord: Vector2i
-var target: MinionState
 
 var debug_name: String
 

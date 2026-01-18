@@ -78,78 +78,72 @@ func spawn_minion(offcord: Vector2i, faction: Faction) -> MinionState:
     
     return minion
         
-func find_closest_minion_and_move(axcord: Vector2i, faction_mask: Faction):
+func find_closest_minion_and_move(axcord: Vector2i, faction_mask: Faction) -> Dictionary:
     var starting_pos = GridUtils.axcord_to_cubecord(axcord)
     
-    # This queue should only contain cubecord coordinates
-    var bfs_queue:  Array[Vector2i] = [starting_pos]
-    var prev_queue: Dictionary      = {starting_pos: null}
-    var visited:    Array[Vector2i] = [starting_pos]
+    var bfs_queue: Array[Vector3i] = [starting_pos]
+    var prev_queue: Dictionary = {starting_pos: null} 
 
     while not bfs_queue.is_empty():
         var curr = bfs_queue.pop_front()
-
-        if curr in visited:
-            continue
-
-        visited.append(curr)
-
+        
         var hex = get_hex_cubecord(curr)
         if curr != starting_pos and hex.lock_by_minion != null:
             var minion = hex.lock_by_minion
-            if minion.faction != minion.faction_mask:
-                return {"minion": minion, "move_towards_enemy": _backtrack_bfs_search(starting_pos, curr, prev_queue)}
-
-        for neighbor in GridUtils.get_neighbors(curr):
-            if is_cubecord_in_bounds(neighbor):
+            if minion.faction != faction_mask:
+                return {
+                    "minion": minion, 
+                    "move_towards_enemy": _backtrack_bfs_search(starting_pos, curr, prev_queue)
+                }
+        
+        if curr != starting_pos and not hex.is_free():
+            continue
+            
+        var neighbors = GridUtils.get_neighbors(curr)
+        for neighbor in neighbors:
+            if is_cubecord_in_bounds(neighbor) and not prev_queue.has(neighbor):
                 bfs_queue.push_back(neighbor)
                 prev_queue[neighbor] = curr
 
-    return null
+    return {"minion": null, "move_towards_enemy": null}
     
-func _backtrack_bfs_search(starting_pos: Vector2i, curr: Vector2i, prev_queue: Dictionary) -> Vector2i:
+func _backtrack_bfs_search(starting_pos: Vector3i, curr: Vector3i, prev_queue: Dictionary) -> Vector3i:
     while prev_queue[curr] != starting_pos:
         curr = prev_queue[curr]
     return curr
     
 func do_minion_action(minion: MinionState):
-    if minion.target == null or minion.target.is_dead():
-        minion.target = find_closest_minion(minion.axcord, minion.faction)
+    assert(not minion.is_dead())
     
-    if minion.target == null:
+    var target_and_next_move := find_closest_minion_and_move(minion.axcord, minion.faction)
+    var target = target_and_next_move.minion
+    var next_move = target_and_next_move.move_towards_enemy
+    
+    # This means that there is no valid path to any enemy minion
+    if next_move == null:
         push_action(1, minion)
         return
-    
-    assert(not minion.is_dead())
         
-    var target_pos := GridUtils.axcord_to_cubecord(minion.target.axcord)
+    var target_pos := GridUtils.axcord_to_cubecord(target.axcord)
     var current_pos := GridUtils.axcord_to_cubecord(minion.axcord)
     
     if GridUtils.cube_length(target_pos - current_pos) <= 1:
         # Attack
-        minion.target.take_damage(minion.stat_attack_power)
-        if minion.target.is_dead():
-            cancel_actions(minion.target)
+        target.take_damage(minion.stat_attack_power)
+        if target.is_dead():
+            cancel_actions(target)
             for hex in hexes:
-                if hex.lock_by_minion == minion.target:
+                if hex.lock_by_minion == target:
                     hex.free_cell()
         
-        minion_state_damaged.emit(minion.target)
+        minion_state_damaged.emit(target)
     else:
-        # Try to move forward
-        var dir := GridUtils.cube_norm(target_pos - current_pos)
-        var diri := GridUtils.cube_round(dir)
-        var new_pos = GridUtils.cubecord_to_axcord(current_pos + diri)
-        
-        var hex = get_hex_axcord(new_pos)
-        if hex.is_free():
-            var prev_hex = get_hex_axcord(minion.axcord)
-            prev_hex.free_cell()
-            
-            hex.occupy_for(minion)
-            
-            minion.axcord = new_pos
-            minion_state_moved.emit(minion)
+        var hex = get_hex_cubecord(next_move)
+        var prev_hex = get_hex_axcord(minion.axcord)
+        prev_hex.free_cell()    
+        hex.occupy_for(minion)
+        minion.axcord = GridUtils.cubecord_to_axcord(next_move)
+        minion_state_moved.emit(minion)
     
     push_action(1, minion)
 

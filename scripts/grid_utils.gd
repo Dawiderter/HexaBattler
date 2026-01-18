@@ -62,7 +62,7 @@ static func get_neighbors(cubecord: Vector3i) -> Array[Vector3i]:
         Vector3i(-1, 0, +1), Vector3i(-1, +1, 0), Vector3i(0, +1, -1), 
     ]
 
-    var arr = []
+    var arr: Array[Vector3i] = []
     for dir in cube_direction_vectors:
         arr.push_back(cubecord + dir)
 
