@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://jijp0njympkb"]
+[gd_scene load_steps=5 format=3 uid="uid://jijp0njympkb"]
 
 [ext_resource type="Script" uid="uid://4o5ny78vhydp" path="res://main.gd" id="1_fos0i"]
 [ext_resource type="PackedScene" uid="uid://c66y8unr1phky" path="res://scenes/hex_grid_3d.tscn" id="2_3dxm6"]
-[ext_resource type="PackedScene" uid="uid://cfpajlnlytw8q" path="res://scenes/timeline.tscn" id="4_trn2v"]
 [ext_resource type="Script" uid="uid://e40gomfuv3da" path="res://scripts/game_simulation.gd" id="5_3dxm6"]
 [ext_resource type="PackedScene" uid="uid://dfxercsqnc52r" path="res://scenes/game_creation_ui.tscn" id="5_03owx"]
 
@@ -22,9 +21,8 @@ size = 11.0
 [node name="GameSimulation" type="Node" parent="."]
 script = ExtResource("5_3dxm6")
 
-[node name="Timeline" parent="GameSimulation" instance=ExtResource("4_trn2v")]
-
 [node name="HexGrid3D" parent="." node_paths=PackedStringArray("game_simulation") instance=ExtResource("2_3dxm6")]
 game_simulation = NodePath("../GameSimulation")
 
 [connection signal="create_grid" from="GridCreationUi" to="." method="_on_grid_creation_ui_create_grid"]
+[connection signal="minion_state_changed" from="GameSimulation" to="HexGrid3D" method="_on_game_simulation_minion_state_changed"]

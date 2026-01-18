@@ -19,6 +19,7 @@ extends Node3D
 var hexes : Array[Hex3D] = []
 var hex_scene = preload("res://scenes/hex.tscn")
 
+var minions : Dictionary[int, Minion3D] = {}
 var minion_scene = preload("res://scenes/minion_3d.tscn")
 
 func get_hex_offcord(offcord: Vector2i) -> Hex3D:
@@ -82,6 +83,7 @@ func spawn_minion(hex: Hex3D, faction: Faction):
     var minion_3d : Minion3D = minion_scene.instantiate()
     
     minion_container.add_child(minion_3d)
+    minions[minion_state.id] = minion_3d
     minion_3d.set_color(minion_state.faction.color)
     minion_3d.set_debug_name(minion_state.debug_name)
     
@@ -98,3 +100,11 @@ func _on_hex_input_event(event: InputEvent, hex: Hex3D):
             var cords = hex.axcords
             var closest = game_simulation.find_closest_minion(cords, game_simulation.factions[0])
             print("Closest: ", closest.debug_name if closest != null else "null")
+
+
+func _on_game_simulation_minion_state_changed(minion_state: MinionState) -> void:
+    var minion_3d = minions[minion_state.id]
+    var hex_position = get_hex_axcord(minion_state.axcord).position
+    
+    minion_3d.position.x = hex_position.x
+    minion_3d.position.z = hex_position.z

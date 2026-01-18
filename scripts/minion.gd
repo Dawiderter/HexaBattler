@@ -1,5 +1,7 @@
 class_name MinionState extends RefCounted
 
+var id : int
+
 var max_health: float
 var health: float = max_health
 
